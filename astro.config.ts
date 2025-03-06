@@ -11,6 +11,8 @@ import { spectreDark } from './src/ec-theme';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
+import netlify from '@astrojs/netlify';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://realfelix.netlify.app',
@@ -53,7 +55,8 @@ export default defineConfig({
       }
     })
   ],
-  adapter: node({
-    mode: 'standalone'
-  })
+  // adapter: node({
+  //   mode: 'standalone'
+  // })
+  adapter: netlify()
 });
