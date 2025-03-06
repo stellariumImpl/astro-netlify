@@ -169,3 +169,27 @@ main {
   flex-direction: column;
   gap: 1rem;
 }
+
+@font-face {
+  font-family: 'LXGW WenKai Screen';
+  src: url('https://gcore.jsdelivr.net/gh/stellariumImpl/CDN/font/LXGWWenKai-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SourceCodePro';
+  src: url('https://gcore.jsdelivr.net/gh/stellariumImpl/CDN/font/SourceCodePro-Medium.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 设置全局默认字体 */
+body {
+  font-family: 'Geist Mono', 'LXGW WenKai Screen', 'georgia', 'STZhongsong', serif;
+}
+
+/* 代码块使用 SourceCodePro */
+code, pre {
+  font-family: 'SourceCodePro', monospace;
+}

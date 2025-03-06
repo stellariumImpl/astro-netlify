@@ -8,10 +8,17 @@ import spectre from './package/src';
 import node from '@astrojs/node';
 import { spectreDark } from './src/ec-theme';
 
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://spectre.louisescher.dev',
+  site: 'https://realfelix.netlify.app',
   output: 'static',
+  markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex],
+  },
   integrations: [
     expressiveCode({
       themes: [spectreDark],
@@ -34,10 +41,10 @@ export default defineConfig({
         }
       },
       giscus: {
-        repository: 'louisescher/spectre',
-        repositoryId: 'R_kgDONjm3ig',
+        repository: 'stellariumImpl/comment',
+        repositoryId: 'R_kgDOIssBOQ',
         category: 'General',
-        categoryId: 'DIC_kwDONjm3is4ClmBF',
+        categoryId: 'DIC_kwDOIssBOc4CTVLD',
         mapping: 'pathname',
         strict: true,
         reactionsEnabled: true,
