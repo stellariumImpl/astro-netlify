@@ -191,5 +191,15 @@ body {
 
 /* 代码块使用 SourceCodePro */
 code, pre {
-  font-family: 'SourceCodePro', monospace;
+  font-family: 'SourceCodePro', monospace!important;
 }
+
+article img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+

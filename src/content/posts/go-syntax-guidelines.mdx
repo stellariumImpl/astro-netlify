@@ -1,0 +1,54 @@
+---
+title: "Go Syntax Guidelines and Best Practices"
+description: "A comprehensive guide to Go syntax, best practices, and common pitfalls to help developers write clean and efficient Go code."
+image: "../assets/wallhaven-gporqq.jpg"
+createdAt: 01-30-2025
+draft: false
+tags:
+  - guide
+  - go
+  - syntax
+---
+
+### Variable Declaration
+
+Go provides multiple ways to declare variables, supporting both global and local scopes.
+
+- **Use `var`** for global variables.
+- **Use `:=`** only inside functions.
+- **Type inference** makes code cleaner.
+- **Multiple variables** can be declared in a single line or block.
+
+#### **Global Variables**
+Declared outside functions, accessible throughout the package.
+
+```go
+var globalA int       // Default to 0
+var globalB int = 1   // Explicit type
+var globalC = 1       // Type inference
+```
+> **Note:** `:=` **cannot** be used for global variables.
+
+#### **Local Variables**
+Declared inside functions and only accessible within them.
+
+```go
+func main() {
+    var a int       // Default to 0
+    var b int = 1   // Explicit type
+    var c = 1       // Type inference
+    d := 1          // Short declaration (only in functions)
+
+    fmt.Println(a, b, c, d)
+}
+```
+
+#### **Multiple Variable Declaration**
+```go
+var x, y, z int = 1, 2, 3
+var k, l = 100, "Go"
+var (
+    w int = 100
+    b bool = true
+)
+```
