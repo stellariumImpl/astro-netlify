@@ -1,0 +1,104 @@
+---
+title: Semantic Segmentation for WildScene Dataset
+date: 01-08-2024
+description: The WildScenes project is a dataset for benchmarking 2D and 3D semantic segmentation models in natural environments, featuring high-resolution images and LiDAR point clouds with semantic labels.
+image: ../assets/default.png
+info:
+  - text: GitHub
+    link: https://github.com/stellariumImpl/groupProject_9517
+    icon:
+      type: lucide
+      name: github
+  # - text: Website
+  #   link: https://seo.thulite.io/
+  #   icon:
+  #     type: lucide
+  #     name: globe
+---
+
+### Project Overview
+
+The `groupProject_9517` repository is a collaborative effort focused on implementing and comparing various semantic segmentation models using deep learning techniques. The project aims to evaluate the performance of different architectures on specific datasets, providing insights into their effectiveness for image segmentation tasks.
+
+**Key Components**
+
+- **Datasets**: Located in the `datasets` directory, this section contains the data utilized for training and testing the models. The data is organized to facilitate efficient loading and preprocessing.
+
+- **Models**: The `models` directory houses implementations of various segmentation architectures, including:
+  - **U-Net**: A convolutional network designed for biomedical image segmentation.
+  - **FCN (Fully Convolutional Network) with ResNet-50 Backbone**: An adaptation of traditional CNNs for pixel-wise prediction.
+  - **DeepLabv3 with ResNet-101 Backbone**: A model that employs atrous convolution for capturing multi-scale context.
+  - **Mask2Former**: A transformer-based approach for universal image segmentation.
+
+- **Training Scripts**: Scripts such as `train_unet.py`, `train_fcn_resnet_50.py`, `train_deeplabv3_resnet101.py`, and `train_mask2former_swin_L.py` are provided to train the respective models. These scripts handle data loading, model initialization, training loops, and evaluation metrics.
+
+- **Utilities**: The `utils` folder includes helper functions and classes, such as data transformations and preprocessing routines, to support the training and evaluation processes.
+
+- **Visualization Results**: The `visualization_results` directory contains outputs from the models, allowing for qualitative assessment of segmentation performance. For instance, the `iou_results.txt` file under `Mask2Former` documents the Intersection over Union metrics achieved by the model. citeturn0search3
+
+**Notebooks**
+
+Several Jupyter notebooks, including `group_work_unet.ipynb`, `group_work_fcn_resnet50.ipynb`, `group_work_deeplabv3_resnet101.ipynb`, and `group_work_mask2former.ipynb`, are provided. These notebooks offer interactive environments to experiment with the models, visualize results, and understand the impact of different parameters on model performance.
+
+**Conclusion**
+
+This project serves as a comprehensive resource for understanding and implementing various semantic segmentation models. By providing code, datasets, and results, it facilitates learning and further research in the field of image segmentation. 
+
+### Plan
+- Split the dataset
+- Load data
+- Select models (U-Net, DeepLab, FCN) for training, compare different models; adjust loss functions, choose optimizers, tune hyperparameters, calculate evaluation metrics (IoU, Dice coefficient)
+- Apply test set to evaluate trained model performance, check generalization ability, verify for overfitting; visualize semantic segmentation on test set images; set up model saving and loading mechanisms
+- Optimize dataset splitting, address gaps in the three sets
+- Write paper, collect references
+
+### Issues
+- Color and trainId mapping seemed incorrect, why was the background all black? (Resolved)
+- How to more intuitively record detailed logs during training and validation processes, how to use visualization tools like TensorBoard to observe changes in loss and mIoU? (Resolved)
+- Current data volume is insufficient, only using V-01 image set (Resolved)
+
+### Usage Instructions
+Download the [dataset](https://doi.org/10.25919/5hzc-5p73) yourself and place it adjacent to the project root directory. Currently using V-01, V-02, and V-03.
+All notebook file contents can be run normally to obtain results.
+- data_split_optimizer.ipynb file splits the dataset
+- group_work_deeplabv3_resnet101.ipynb includes training, prediction, and visualization for deeplabv3_resnet101
+- group_work_fcn_resnet50.ipynb includes training, prediction, and visualization for fcn_resnet50
+- group_work_mask2former.ipynb includes training, prediction, and visualization for mask2former
+- group_work_unet.ipynb includes training, prediction, and visualization for unet
+
+### Environment Configuration
+```
+conda create -n group_work python=3.9
+conda activate group_work
+conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+pip install -r requirements.txt
+# Some errors may occur, but they're not critical. If you need to resolve them:
+pip uninstall torchaudio -y
+pip show torch torchvision
+# #Name: torch
+# Version: 1.10.1
+# Summary: Tensors and Dynamic neural networks in Python with strong GPU acceleration
+# Home-page: https://pytorch.org/
+# Author: PyTorch Team
+# Author-email: packages@pytorch.org
+# License: BSD-3
+# Location: e:\languages\anaconda3\envs\image_processing\lib\site-packages
+# Requires: typing-extensions
+# Required-by: torchvision
+# ---
+# Name: torchvision
+# Version: 0.11.2
+# Summary: image and video datasets and models for torch deep learning
+# Home-page: https://github.com/pytorch/vision
+# Author: PyTorch Core Team
+# Author-email: soumith@pytorch.org
+# License: BSD
+# Location: e:\languages\anaconda3\envs\image_processing\lib\site-packages
+# Requires: numpy, pillow, torch
+# Required-by:
+# The environment already has torchvision 0.11.2 correctly installed, compatible with PyTorch 1.10.1
+# Install torchaudio version compatible with PyTorch 1.10.1
+pip install torchaudio==0.10.1 
+# If you encounter any problems installing torchaudio
+conda install torchaudio==0.10.1 -c pytorch
+```

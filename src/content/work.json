@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "duration": "2024.11 - 2025.02",
+    "company": "Media",
+    "title": "Internship of Software Engineer",
+    "description": "Developed a real-time data visualization and experiment control platform using Vue 3, WebSocket, and ECharts, optimizing performance, responsiveness, and user experience."
+  }
+]

@@ -1,0 +1,167 @@
+---
+title: "Go Syntax Guidelines and Best Practices"
+description: "A comprehensive guide to Go syntax, best practices, and common pitfalls to help developers write clean and efficient Go code."
+image: "../assets/wallhaven-gporqq.jpg"
+createdAt: 01-30-2025
+draft: false
+tags:
+  - guide
+  - go
+  - syntax
+---
+
+### Variable Declaration
+
+Go provides multiple ways to declare variables, supporting both global and local scopes.
+
+- **Use `var`** for global variables.
+- **Use `:=`** only inside functions.
+- **Type inference** makes code cleaner.
+- **Multiple variables** can be declared in a single line or block.
+
+#### **Global Variables**
+Declared outside functions, accessible throughout the package.
+
+```go
+var globalA int       // Default to 0
+var globalB int = 1   // Explicit type
+var globalC = 1       // Type inference
+```
+> **Note:** `:=` **cannot** be used for global variables.
+
+#### **Local Variables**
+Declared inside functions and only accessible within them.
+
+```go
+func main() {
+    var a int       // Default to 0
+    var b int = 1   // Explicit type
+    var c = 1       // Type inference
+    d := 1          // Short declaration (only in functions)
+
+    fmt.Println(a, b, c, d)
+}
+```
+
+#### **Multiple Variable Declaration**
+```go
+var x, y, z int = 1, 2, 3
+var k, l = 100, "Go"
+var (
+    w int = 100
+    b bool = true
+)
+```
+
+### **Const & iota**  
+
+#### **Understanding `iota`**  
+
+In Go, `iota` is an auto-incrementing constant generator used within a `const` block. It resets to `0` at the start of each `const` block and increases by `1` on each new line.  
+
+```go
+const (
+    A = iota  // A = 0
+    B         // B = 1
+    C         // C = 2
+)
+```
+
+- Each constant inherits an incremented `iota` value.  
+- Useful for defining sequential constants automatically.  
+
+> **Note:** `iota` can only be used within `const` blocks. It is not available for variables declared with `var`.
+
+#### **Using `iota` for Enums**  
+
+Enums in Go are commonly defined using `iota`, avoiding manual value assignment:  
+
+```go
+const (
+    beijing = iota  // 0
+    shanghai        // 1
+    shenzhen        // 2
+)
+```
+
+- Each city gets an incremental value.  
+- Adding a new item won’t affect previous values.  
+
+#### **Arithmetic with `iota`**  
+
+`iota` can be used with arithmetic operations to generate structured values:  
+
+```go
+const (
+    a, b = iota + 1, iota + 2  // 1, 2
+    c, d                       // 2, 3
+    e, f                       // 3, 4
+    g, h = iota * 2, iota * 3  // 6, 9
+    i, j                       // 8, 12
+)
+```
+
+- Values auto-increment while applying arithmetic transformations.  
+- Useful for defining progressive scales or step-based values.  
+
+> **Note:** Arithmetic with `iota` simplifies the generation of related values, reducing human errors.  
+
+#### **Constants in Go**  
+
+Constants (`const`) are immutable at compile time, unlike variables (`var`), which can be modified:  
+
+```go
+const maxUsers int = 100
+var currentUsers int = 50
+
+func main() {
+    maxUsers = 120  // ❌ Error: constants cannot be modified
+    currentUsers = 60  // ✅ Allowed
+}
+```
+
+- Constants are ideal for fixed settings.  
+- Variables should be used for dynamic values.  
+
+#### **Bitwise Operations with `iota`**  
+
+Using `iota` with bitwise shifts (`<<`) is common for defining flags or permissions:  
+
+```go
+const (
+    Read  = 1 << iota  // 1
+    Write              // 2
+    Execute            // 4
+    Admin              // 8
+)
+```
+
+- Each flag represents a unique bit position.  
+- Multiple flags can be combined using bitwise OR (`|`).  
+
+> **Note:** Bitwise `iota` is efficient for managing multiple boolean states in a compact form.  
+
+#### **Common Mistakes with `iota`**  
+
+A frequent mistake is attempting to use `iota` outside a `const` block:  
+
+```go
+var x int = iota  // ❌ Error: iota is not available outside const
+```
+
+Correct approach:  
+
+```go
+const mode = iota
+var selectedMode int = mode  // ✅ Works correctly
+```
+
+> **Note:** Always use `iota` within `const` declarations. If you need runtime values, use functions or variables instead.  
+
+#### **Use Cases for `iota`**  
+
+- **Enumerations** (e.g., error codes, log levels).  
+- **Bitwise flags** (e.g., user permissions, feature toggles).  
+- **Arithmetic sequences** (e.g., scaling factors, power-of-two series).  
+
+By utilizing `iota`, Go developers can efficiently manage sequential constants and structured values with minimal effort. 
