@@ -1,13 +1,15 @@
 ---
-title: "Go Syntax Guidelines and Best Practices"
+title: "Go Syntax Guidelines"
 description: "A comprehensive guide to Go syntax, best practices, and common pitfalls to help developers write clean and efficient Go code."
 image: "../assets/wallhaven-gporqq.jpg"
 createdAt: 01-30-2025
 draft: false
 tags:
-  - guide
-  - go
-  - syntax
+  - go syntax
+  - 变量与常量
+  - iota关键字
+  - 函数
+
 ---
 
 ### Variable Declaration
@@ -165,3 +167,227 @@ var selectedMode int = mode  // ✅ Works correctly
 - **Arithmetic sequences** (e.g., scaling factors, power-of-two series).  
 
 By utilizing `iota`, Go developers can efficiently manage sequential constants and structured values with minimal effort. 
+
+
+### Function Basics in Go
+
+In Go, functions are defined using the `func` keyword, followed by the function name, parameters, return type(s), and body. Here's the general structure:
+
+```go
+func functionName(parameterList) (returnTypes) {
+    // Function body
+    return values
+}
+```
+
+Let's break down three fundamental examples to understand how functions work in Go.
+
+#### Single Parameter & Return 
+The first example, `foo1`, takes a string and an integer as parameters, prints them, and returns a single integer:
+
+```go
+func foo1(a string, b int) int {
+    fmt.Println("a =", a)
+    fmt.Println("b =", b)
+    c := 100
+    return c
+}
+```
+
+- **Parameters**: `a` (string) and `b` (int).
+- **Return Type**: A single `int` value.
+- **Behavior**: Prints the parameters and returns the integer `c` (100).
+- **Usage**: Call it as `foo1("abc", 555)` to get the return value `100`.
+
+#### Multiple Return 
+Go functions can return multiple values, which is a powerful feature often used for error handling or returning multiple results. Here's `foo2`:
+
+```go
+func foo2(a string, b int) (int, int) {
+    fmt.Println("a =", a)
+    fmt.Println("b =", b)
+    return 666, 777
+}
+```
+
+- **Parameters**: `a` (string) and `b` (int).
+- **Return Types**: Two `int` values.
+- **Behavior**: Prints the parameters and returns the integers `666` and `777`.
+- **Usage**: Call it as `ret1, ret2 := foo2("abc", 555)` to assign `ret1` as `666` and `ret2` as `777`.
+
+#### Named Return with Shorthand
+Go supports named return values, and when multiple return values share the same type, you can use a shorthand syntax. Here's `foo3`:
+
+```go
+func foo3(a string, b int) (r1, r2 int) {
+    fmt.Println("a =", a)
+    fmt.Println("b =", b)
+    r1 = 1000
+    r2 = 2000
+    return
+}
+```
+
+- **Shorthand Syntax**: `(r1, r2 int)` declares both `r1` and `r2` as `int` in a single statement.
+- **Named Returns**: `r1` and `r2` are automatically initialized to zero (`0`) and can be assigned directly.
+- **Behavior**: Prints the parameters, sets `r1` to `1000` and `r2` to `2000`, and returns them.
+- **Usage**: Call it as `r1, r2 := foo3("abc", 555)` to get `r1` as `1000` and `r2` as `2000`.
+
+> **Note**: The shorthand `(r1, r2 int)` is equivalent to `(r1 int, r2 int)` but more concise. It only works when the return values have the same type.
+
+#### Calling the Functions
+To see these functions in action, here's how they are called in the `main` function:
+
+```go
+func main() {
+    a := "abc"
+    b := 555
+    c := foo1(a, b)
+    ret1, ret2 := foo2(a, b)
+    r1, r2 := foo3(a, b)
+
+    fmt.Println(a, b, c)
+    fmt.Println(ret1, ret2)
+    fmt.Println(r1, r2)
+}
+```
+
+- **Output**:
+  ```
+  a = abc
+  b = 555
+  a = abc
+  b = 555
+  a = abc
+  b = 555
+  abc 555 100
+  666 777
+  1000 2000
+  ```
+
+
+
+### Package Paths & init Method
+
+
+
+#### File Structure
+
+```
+my-go-project/
+├── golangStudy/
+│   ├── 5.packinit/
+│   │   ├── lib1/
+│   │   │   └── test_lib.go
+│   │   ├── lib2/
+│   │   │   └── test_lib.go
+│   │   └── test_main.go
+├── go.mod
+```
+
+#### Imports in main
+`test_main.go` imports `lib1` and `lib2`:
+
+```go
+package main
+
+import (
+    "golangStudy/5.packinit/lib1"
+    "golangStudy/5.packinit/lib2"
+)
+
+func main() {
+    lib1.Test_lib1()
+    lib2.Test_lib2()
+}
+```
+
+- **Paths**: Imports `"golangStudy/5.packinit/lib1"` and `"golangStudy/5.packinit/lib2"` resolve relative to the module root.
+- **Module**: `go.mod` defines:
+  ```plaintext
+  module golangStudy
+  ```
+
+#### Import Path Issues
+Error `could not import golangStudy/5.packinit/lib1` arises if:
+- `go.mod` module name mismatches.
+- `go.mod` is missing.
+- Package declarations are incorrect.
+
+#### How to fix
+1. Run `go mod init golangStudy` if `go.mod` is absent.
+2. Confirm `lib1/test_lib.go` uses `package lib1` and `lib2/test_lib.go` uses `package lib2`.
+3. Run `go mod tidy` and `go run 5.packinit/test_main.go`.
+
+#### The init Method
+Both `lib1` and `lib2` define `init` functions for initialization.
+
+- Go initializes packages in import order (`lib1`, then `lib2`).
+- `init` functions run before `main()`.
+
+#### Complete Example
+
+- **`lib1/test_lib.go`**:
+  ```go
+  package lib1
+
+  import "fmt"
+
+  func Test_lib1() {
+      fmt.Println("test_lib1")
+  }
+
+  func init() {
+      fmt.Println("lib1 init")
+  }
+  ```
+
+- **`lib2/test_lib.go`**:
+  ```go
+  package lib2
+
+  import "fmt"
+
+  func Test_lib2() {
+      fmt.Println("test_lib2")
+  }
+
+  func init() {
+      fmt.Println("lib2 init")
+  }
+  ```
+
+- **`test_main.go`**:
+  ```go
+  package main
+
+  import (
+      "golangStudy/5.packinit/lib1"
+      "golangStudy/5.packinit/lib2"
+  )
+
+  func main() {
+      lib1.Test_lib1()
+      lib2.Test_lib2()
+  }
+  ```
+
+- **Run**: From `my-go-project`, execute:
+  ```bash
+  go run 5.packinit/test_main.go
+  ```
+
+- **Output**:
+  ```
+  lib1 init
+  lib2 init
+  test_lib1
+  test_lib2
+  ```
+
+#### Notes and Precautions
+
+- **Function Name Casing**: Functions called from other packages (e.g., `Test_lib1`, `Test_lib2`) must start with an uppercase letter to be exported. Lowercase names (e.g., `test_lib1`) are private to the package.
+- **init Usage**: Use `init` for setup only; avoid complex logic to prevent side effects.
+- **Import Path Accuracy**: Ensure import paths match the module and directory structure exactly.
+- **Module Setup**: Always initialize `go.mod` and run `go mod tidy` to avoid import errors.
