@@ -79,11 +79,24 @@ const { Content, headings } = await render(post);
             <h1 class="no-mt article-h1">{post.data.title}</h1>
           </div>
           <div class="article-info">
-            <span>{post.data.createdAt.toLocaleDateString()}</span>
-            <span>/</span>
-            <span>{timeToRead(post)} minute{timeToRead(post) === 1 ? "" : "s"} to read</span>
-            <span>/</span>
-            <span>Tags: {post.data.tags.map((tag) => tag.id).join(", ")}</span>
+            <div>
+              <span>{post.data.createdAt.toLocaleDateString()}</span>
+              <span>/</span>
+              <span style="display:inline-block">{timeToRead(post)} minute{timeToRead(post) === 1 ? "" : "s"} to read</span>
+            </div>
+          </div>
+          <div class="article-info">
+            <span>
+              Tags:{" "}
+              {post.data.tags.map((tag, index) => (
+                <a
+                  href={`/blog?tags=${tag.id}`}
+                  style={{ textDecoration: "none", color: "#0070f3" }}
+                >
+                  {tag.id}
+                </a>
+              ))}
+            </span>
           </div>
         </div>
       </div>
